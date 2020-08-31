@@ -13,7 +13,12 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public int exercise_b(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> vertex = graph.getVertexes();
+        int loops = 0;
+        for (T v : vertex) {
+            if (graph.hasEdge(v, v))
+                loops++;
+        } return loops;
     }
 
     @Override
