@@ -8,14 +8,20 @@ import java.util.List;
 public class Tp1Impl<T> implements Tp1<T> {
     @Override
     public void exercise_a(Graph<T> graph) {
-        System.out.println("STEINS;GATE");
+        List<T> vertexes = graph.getVertexes();
+        for (T v : vertexes) {
+            System.out.println("Vertex: " + v);
+            List<T> adyacent = graph.getAdjacencyList(v);
+            for (T w : adyacent)
+            System.out.println("{ "+ v + " , " + w + "}");
+        }
     }
 
     @Override
     public int exercise_b(Graph<T> graph) {
-        List<T> vertex = graph.getVertexes();
+        List<T> vertexes = graph.getVertexes();
         int loops = 0;
-        for (T v : vertex) {
+        for (T v : vertexes) {
             if (graph.hasEdge(v, v))
                 loops++;
         } return loops;
@@ -33,9 +39,9 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public int exercise_e(Graph<T> graph) {
-        List<T> vertex = graph.getVertexes();
+        List<T> vertexes = graph.getVertexes();
         int isolated = 0;
-        for (T v : vertex){
+        for (T v : vertexes){
             if (graph.getAdjacencyList(v).isEmpty())
                 ++isolated;
         }
