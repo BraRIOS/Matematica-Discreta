@@ -8,7 +8,7 @@ import java.util.List;
 public class Tp1Impl<T> implements Tp1<T> {
     @Override
     public void exercise_a(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        System.out.println("STEINS;GATE");
     }
 
     @Override
