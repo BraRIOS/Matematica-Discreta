@@ -33,7 +33,13 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public int exercise_e(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> vertex = graph.getVertexes();
+        int isolated = 0;
+        for (T v : vertex){
+            if (graph.getAdjacencyList(v).isEmpty())
+                ++isolated;
+        }
+        return isolated;
     }
 
     @Override
