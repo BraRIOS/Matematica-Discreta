@@ -48,7 +48,15 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public int[][] exercise_h(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> v = graph.getVertexes();
+        int n = graph.order();
+        int[][] A = new int[n][n];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if (graph.hasEdge(v.get(i), v.get(j)))
+                    A[i][j] = 1;
+            }
+        } return A;
     }
 
     @Override
