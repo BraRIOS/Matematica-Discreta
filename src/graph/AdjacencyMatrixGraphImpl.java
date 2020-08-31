@@ -99,16 +99,21 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
     public List<T> getVertexes() {
         List<T> list = new LinkedList<>();
         if (n!=0)
-            list = new LinkedList<>(Arrays.asList(V));
+            for(T v : V){
+                if (v!=null)
+                    list.add(v);
+            }
         return list;
     }
 
     @Override
     public List<T> getAdjacencyList(T v) {
         LinkedList<Integer> lst = new LinkedList<>();
-        for (int w = 0; w < V.length ; w++)
-            if (A[(int)v][w])
-                lst.add(w);
+        if (hasVertex(v)) {
+            for (int w = 0; w < V.length; w++)
+                if (A[(int) v][w])
+                    lst.add(w);
+        }
         return (List<T>) lst;
     }
 }
