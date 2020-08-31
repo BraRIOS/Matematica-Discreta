@@ -3,11 +3,10 @@ package graph;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
-    private T[] V;
-    private boolean[][] A;
+    public T[] V; //Array de vertices
+    private boolean[][] A; //Matriz de adyacencia
     private int n;
     private int alpha;
 
@@ -26,46 +25,46 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public void addVertex(T x) {
-        if (n == V.length){
-            growVertexes();
-            growMatrixA();
+        if ((int)x >= V.length){
+            growVertexes((int) x);
+            growMatrixA((int) x);
         }
-        V[n] = x;
+        V[(int)x] = x;
         n++;
     }
 
-    private void growVertexes() {
-        T[] aux = (T[]) new Object[V.length*2];
+    private void growVertexes(int x) {
+        T[] aux = (T[]) new Object[V.length+x];
         System.arraycopy(V, 0, aux, 0, V.length);
         V = aux;
     }
 
-    private void growMatrixA() {
-        int size = A.length*2;
+    private void growMatrixA(int x) {
+        int size = A.length+x;
         boolean[][] matrix = new boolean[size][size];
         for (int i = 0; i < A.length; i++) {
             System.arraycopy(A[i], 0, matrix[i], 0, A.length);
         }
+        A = matrix;
     }
 
     @Override
     public boolean hasVertex(T v){
-        return V[(int)v]!=null;
+        if (!((int)v >= V.length))
+            return V[(int)v]!=null;
+        return false;
     }
 
     @Override
     public void removeVertex(T x) {
-        for (int v = 0; v < n ; v++) {
-            if (V[v] == x) {
-                V[v] = null;
-                n--;
-            } else throw new NoSuchElementException("El elemento no existe");
+        if (hasVertex(x)) {
+            V[(int)x] = null;
         }
     }
 
     @Override
     public void addEdge(T v, T w) {
-        if (!A[(int) v][(int) w]){
+        if (!hasEdge(v,w) && !((int)v >= A.length || (int)w >=A.length)){
             A[(int)v][(int)w]=A[(int)w][(int)v] = true;
             alpha++;
         }
@@ -73,7 +72,7 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public void removeEdge(T v, T w) {
-        if (A[(int)v][(int)w]){
+        if (hasEdge(v,w)){
             A[(int)v][(int)w]=A[(int)w][(int)v] = false;
             alpha--;
         }
@@ -81,7 +80,9 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public boolean hasEdge(T v, T w) {
-        return A[(int)v][(int)w];
+        if (!((int)v>=A.length || (int)w>=A.length))
+            return A[(int)v][(int)w];
+        return false;
     }
 
     @Override
@@ -96,13 +97,16 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
 
     @Override
     public List<T> getVertexes() {
-        return new LinkedList<>(Arrays.asList(V));
+        List<T> list = new LinkedList<>();
+        if (n!=0)
+            list = new LinkedList<>(Arrays.asList(V));
+        return list;
     }
 
     @Override
     public List<T> getAdjacencyList(T v) {
         LinkedList<Integer> lst = new LinkedList<>();
-        for (int w = 0; w < n ; w++)
+        for (int w = 0; w < V.length ; w++)
             if (A[(int)v][w])
                 lst.add(w);
         return (List<T>) lst;
