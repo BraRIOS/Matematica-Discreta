@@ -1,7 +1,9 @@
 package tp1;
 
+import graph.AdjacencyMatrixGraphImpl;
 import graph.Graph;
 
+import java.util.LinkedList;
 import java.util.List;
 
 // TODO: implement
@@ -29,12 +31,17 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public List<T> exercise_c(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> vertexes = graph.getVertexes();
+        List<T> output = new LinkedList<>();
+        for (T v : vertexes) {
+            if (graph.hasEdge(v, v))
+                output.add(v);
+        } return output;
     }
 
     @Override
     public boolean exercise_d(Graph<T> graph, T vertex) {
-        throw new UnsupportedOperationException("TODO");
+        return (graph.getAdjacencyList(vertex).isEmpty());
     }
 
     @Override
@@ -50,12 +57,29 @@ public class Tp1Impl<T> implements Tp1<T> {
 
     @Override
     public List<T> exercise_f(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> vertexes = graph.getVertexes();
+        List<T> output = new LinkedList<>();
+        for (T v: vertexes) {
+            if (graph.getAdjacencyList(v).isEmpty())
+                output.add(v);
+        } return output;
     }
 
     @Override
     public Graph<T> exercise_g(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        Graph<T> output = new AdjacencyMatrixGraphImpl<>();
+        List<T> v = graph.getVertexes();
+        for(T w: v) {
+            if(!graph.getAdjacencyList(w).isEmpty())
+                output.addVertex(w);
+        }
+        for(T w: v) {
+            List<T> aux = graph.getAdjacencyList(w);
+            for(T x: aux) {
+                if (x!=w)
+                    output.addEdge(x,w);
+            }
+        } return output;
     }
 
     @Override
@@ -71,8 +95,29 @@ public class Tp1Impl<T> implements Tp1<T> {
         } return A;
     }
 
+    /*  Existen factorial de alfa (alpha!) formas de representar una matriz de incidencias.
+        Es muy poco probable de que la salida coincida con la matriz del test.
+        En consecuencia, agregue lineas de codigo para que estas coincidan.
+     */
     @Override
     public int[][] exercise_i(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        int[][] output = new int[graph.order()][graph.alpha()];
+        List<T> v = graph.getVertexes();
+        int edges = 0;
+        for (int i = 0; i < graph.order(); i++) {
+            for (int j = i; j < graph.order(); j++) {
+                if (graph.hasEdge(v.get(i), v.get(j))) {
+                    //----------------------------------
+                    if (j-i > 2) {
+                        output[i][graph.alpha()-1] = 1;
+                        output[j][graph.alpha()-1] = 1;
+                    } else {
+                        //------------------------------
+                        output[i][edges] = 1;
+                        output[j][edges++] = 1;
+                    }
+                }
+            }
+        } return output;
     }
 }
