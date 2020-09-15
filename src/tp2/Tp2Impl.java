@@ -4,39 +4,34 @@ import graph.AdjacencyMatrixGraphImpl;
 import graph.Graph;
 
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2Impl<T> implements Tp2<T> {
+
     @Override
     public List<T> depth_first_search(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> result = new ArrayList<>();
+        List<T> vertexes = graph.getVertexes();        
+        T top;
+        boolean[] visited = new boolean[graph.order()];
+        Stack<T> stack = new Stack<>();
+        List<T> list;
+        stack.push(vertexes.get(0));
+        visited[0] = true;
+        while (!stack.isEmpty()) {
+            top = stack.pop();
+            result.add(top);
+            list = graph.getAdjacencyList(top);
+            for (T v: list) {
+                if (!visited[vertexes.indexOf(v)]) {
+                    visited[vertexes.indexOf(v)] = true;
+                    stack.push(v);
+                }
+            }
+        }
+        return result;
     }
-
-    /*public void bfs(Grafo g, int v) {
- int fr;
- boolean[] visitado = new visitado[g.orden()];
- Cola c = new ColaD();
- intList lst;
- c.agregar(c);
- visitado[v] = true;
- while (!c.esVacia()){
- fr = c.verFrente();
- c.sacar();
- procesar(fr);
- lst = g.getListaAdy(fr);
- if(lst.longitud() != 0 ){
- lst.irPrimero();
- for (int i = 0; i < lst.longitud(); i++){
- if(!visitado[lst.verActual()]{
- visitado[lst.verActual()]= true;
-c.agregar(lst.verActual());
- }
- lst.irSiguiente();
- }
- }
- }
- }*/
+    
     @Override
     public List<T> breadth_first_search(Graph<T> graph) {
         List<T> result = new ArrayList<>();
@@ -51,12 +46,10 @@ c.agregar(lst.verActual());
             front = queue.poll();
             result.add(front);
             list = graph.getAdjacencyList(front);
-            if (list.size() != 0) {
-                for (T v: list) {
-                    if (!visited[vertexes.indexOf(v)]) {
-                        visited[vertexes.indexOf(v)] = true;
-                        queue.add(v);
-                    }
+            for (T v: list) {
+                if (!visited[vertexes.indexOf(v)]) {
+                    visited[vertexes.indexOf(v)] = true;
+                    queue.add(v);
                 }
             }
         }
@@ -65,17 +58,65 @@ c.agregar(lst.verActual());
 
     @Override
     public boolean exercise_a(Graph<T> graph, T v, T w) {
-        throw new UnsupportedOperationException("TODO");
+        // Analiza si existe un Camino Simple
+        if (!graph.getVertexes().contains(v) || !graph.getVertexes().contains(w))
+            return false;
+        if (v == w || graph.hasEdge(v, w))
+            return true;
+        T top;
+        List<T> list;
+        Stack<T> toVisit = new Stack<>();
+        boolean[] visited = new boolean[graph.order()];
+        toVisit.push(v);
+        while (!toVisit.isEmpty()) {
+            top = toVisit.pop();
+            list = graph.getAdjacencyList(top);
+            visited[graph.getVertexes().indexOf(top)] = true;
+            for (T t: list) {
+                if (t == w) return true;
+                if (!visited[graph.getVertexes().indexOf(t)])
+                    toVisit.push(t);
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean exercise_b(Graph<T> graph, T v) {
+        if (!graph.getVertexes().contains(v))
+            return false;
+        T top;
+        int l; // Longitud del camino
+        List<T> list;
+        Stack<T> toVisit = new Stack<>();
+        boolean[] visited = new boolean[graph.order()];
+        visited[graph.getVertexes().indexOf(v)] = true;
+        for (T w: graph.getAdjacencyList(v)) {
+            l = 0;
+            toVisit.push(w);
+            while (!toVisit.isEmpty()) {
+                top = toVisit.pop();
+                list = graph.getAdjacencyList(top);
+                visited[graph.getVertexes().indexOf(top)] = true;
+                for (T t: list) {
+                    if (t == v && l > 0) return true;
+                    if (!visited[graph.getVertexes().indexOf(t)]) {
+                        toVisit.push(t);
+                    }
+                }
+                l++;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean exercise_c(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        for (T v: graph.getVertexes()) {
+            if (exercise_b(graph, v))
+                return true;
+        }
+        return false;
     }
 
     @Override
