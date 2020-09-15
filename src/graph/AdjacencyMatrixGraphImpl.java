@@ -27,13 +27,13 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
     @Override
     public void addVertex(T x) {
         if (V.size() == A.length)
-            growMatrixA((int) x);
+            growMatrixA();
         V.add(x);
         n++;
     }
 
-    private void growMatrixA(int x) {
-        int size = A.length+x;
+    private void growMatrixA() {
+        int size = A.length+10;
         boolean[][] matrix = new boolean[size][size];
         for (int i = 0; i < A.length; i++) {
             System.arraycopy(A[i], 0, matrix[i], 0, A.length);

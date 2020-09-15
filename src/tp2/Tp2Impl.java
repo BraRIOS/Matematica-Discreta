@@ -58,31 +58,36 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public boolean exercise_a(Graph<T> graph, T v, T w) {
-        // Analiza si existe un Camino Simple
+        return existPath(graph, v, w);
+    }
+
+    public boolean existPath(Graph<T> graph, T v, T w) {
+        boolean[] visited = new boolean[graph.order()];
+        return existPath(graph, v, w, visited);
+    }
+
+    public boolean existPath(Graph<T> graph, T v, T w, boolean[] visited) {
         if (!graph.getVertexes().contains(v) || !graph.getVertexes().contains(w))
             return false;
-        if (v == w || graph.hasEdge(v, w))
+        if ((v == w) || graph.hasEdge(v, w))
             return true;
-        T top;
         List<T> list;
-        Stack<T> toVisit = new Stack<>();
-        boolean[] visited = new boolean[graph.order()];
-        toVisit.push(v);
-        while (!toVisit.isEmpty()) {
-            top = toVisit.pop();
-            list = graph.getAdjacencyList(top);
-            visited[graph.getVertexes().indexOf(top)] = true;
-            for (T t: list) {
-                if (t == w) return true;
-                if (!visited[graph.getVertexes().indexOf(t)])
-                    toVisit.push(t);
-            }
+        visited[graph.getVertexes().indexOf(v)] = true;
+        list = graph.getAdjacencyList(v);
+        if (list.isEmpty()) return false;
+        for (T ady: list) {
+            if (!visited[graph.getVertexes().indexOf(ady)] && existPath(graph, ady, w, visited))
+                return true;
         }
         return false;
     }
 
     @Override
     public boolean exercise_b(Graph<T> graph, T v) {
+        return existCycleFrom(graph, v);
+    }
+
+    public boolean existCycleFrom(Graph<T> graph, T v) {
         if (!graph.getVertexes().contains(v))
             return false;
         T top;
@@ -113,7 +118,7 @@ public class Tp2Impl<T> implements Tp2<T> {
     @Override
     public boolean exercise_c(Graph<T> graph) {
         for (T v: graph.getVertexes()) {
-            if (exercise_b(graph, v))
+            if (existCycleFrom(graph, v))
                 return true;
         }
         return false;
@@ -121,17 +126,53 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public boolean exercise_d(Graph<T> graph) {
-        return false;
+        if (graph.order() == 0 || graph.alpha() == 0)
+            return false;
+        T first = graph.getVertexes().get(0);
+        for (int i = 1; i < graph.order(); i++) {
+            if (!existPath(graph, first, graph.getVertexes().get(i)))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public int exercise_e(Graph<T> graph, T v, T w) {
-        throw new UnsupportedOperationException("TODO");
+        return findPath(graph, v, w).size() - 1;
     }
 
     @Override
     public List<T> exercise_f(Graph<T> graph,T v, T w) {
-        return new ArrayList<>();
+        return findPath(graph, v, w);
+    }
+
+    public List<T> findPath(Graph<T> graph, T v, T w) {
+        List<T> pathFounded = new ArrayList<>();
+        boolean[] visited = new boolean[graph.order()];
+        pathFounded = findPath(graph, v, w, visited, pathFounded);
+        return pathFounded;
+    }
+
+    public List<T> findPath(Graph<T> graph, T v, T w, boolean[] visited, List<T> pathFounded) {
+        if (!existPath(graph, v, w))
+            return pathFounded;
+        if (v == w) {
+            pathFounded.add(v);
+            return pathFounded;
+        }
+        List<T> list;
+        visited[graph.getVertexes().indexOf(v)] = true;
+        list = graph.getAdjacencyList(v);
+        pathFounded.add(v);
+
+        for (T ady: list) {
+            if (!visited[graph.getVertexes().indexOf(ady)] ) {
+                visited[graph.getVertexes().indexOf(ady)] = true;
+                List<T> path = findPath(graph, ady, w, visited, pathFounded);
+                return pathFounded;
+            }
+        }
+        return pathFounded;
     }
 
     @Override

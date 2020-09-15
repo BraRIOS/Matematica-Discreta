@@ -278,8 +278,8 @@ public class Tp2Test extends SkipRule {
         graph.addEdge("B", "C");
         graph.addEdge("C", "D");
 
-        assertEquals(4, tp2.exercise_e(graph, "A", "D"));
-        assertEquals(3, tp2.exercise_e(graph, "A", "C"));
+        assertEquals(3, tp2.exercise_e(graph, "A", "D"));
+        assertEquals(2, tp2.exercise_e(graph, "A", "C"));
     }
 
     //    f) Calcular un camino que une dos vértices dados.
