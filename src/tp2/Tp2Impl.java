@@ -3,10 +3,9 @@ package tp2;
 import graph.AdjacencyMatrixGraphImpl;
 import graph.Graph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2Impl<T> implements Tp2<T> {
     @Override
@@ -14,9 +13,54 @@ public class Tp2Impl<T> implements Tp2<T> {
         throw new UnsupportedOperationException("TODO");
     }
 
+    /*public void bfs(Grafo g, int v) {
+ int fr;
+ boolean[] visitado = new visitado[g.orden()];
+ Cola c = new ColaD();
+ intList lst;
+ c.agregar(c);
+ visitado[v] = true;
+ while (!c.esVacia()){
+ fr = c.verFrente();
+ c.sacar();
+ procesar(fr);
+ lst = g.getListaAdy(fr);
+ if(lst.longitud() != 0 ){
+ lst.irPrimero();
+ for (int i = 0; i < lst.longitud(); i++){
+ if(!visitado[lst.verActual()]{
+ visitado[lst.verActual()]= true;
+c.agregar(lst.verActual());
+ }
+ lst.irSiguiente();
+ }
+ }
+ }
+ }*/
     @Override
     public List<T> breadth_first_search(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> result = new ArrayList<>();
+        List<T> vertexes = graph.getVertexes();
+        T front;
+        boolean[] visited = new boolean[graph.order()];
+        Queue<T> queue = new LinkedBlockingQueue<>();
+        List<T> list;
+        queue.add(vertexes.get(0));
+        visited[0] = true;
+        while (!queue.isEmpty()) {
+            front = queue.poll();
+            result.add(front);
+            list = graph.getAdjacencyList(front);
+            if (list.size() != 0) {
+                for (T v: list) {
+                    if (!visited[vertexes.indexOf(v)]) {
+                        visited[vertexes.indexOf(v)] = true;
+                        queue.add(v);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     @Override
