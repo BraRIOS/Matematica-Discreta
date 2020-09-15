@@ -5,4 +5,5 @@ import graph.GraphType;
 
 public interface GraphFactory<T> {
     Graph<T> createFromType(GraphType type);
+    Graph<T> getGraph();
 }

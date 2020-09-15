@@ -44,7 +44,23 @@ public class Tp1Test extends SkipRule {
 
     //    a) Mostrar el grafo.
     @Test
-    public void exercise_a_test_print() {
+    public void exercise_a_print_empty_graph_test() {
+        tp1.exercise_a(graph);
+    }
+
+    @Test
+    public void exercise_a_print_graph_test() {
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        graph.addVertex(5);
+
+        graph.addEdge(2, 3);
+        graph.addEdge(4, 5);
+        graph.addEdge(1, 1);
+        graph.addEdge(4, 4);
+        graph.addEdge(2, 2);
         tp1.exercise_a(graph);
     }
 
@@ -279,6 +295,7 @@ public class Tp1Test extends SkipRule {
     }
 
     //    i) Calcular y mostrar la matriz de incidencia.
+    //    FIXME: There are many ways of showing the graph, the test is not useful!
     @Test
     public void exercise_i_test_from_the_presentation() {
         graph.addVertex(1);
@@ -297,6 +314,23 @@ public class Tp1Test extends SkipRule {
         graph.addEdge(4, 6);
         graph.addEdge(3, 6);
 
-        assertArrayEquals(new int[][]{{1,0,0,0,0,0,0,0}, {1,1,1,0,0,0,0,0}, {0,1,0,1,1,0,0,1}, {0,0,1,1,0,1,1,0}, {0,0,0,0,1,1,0,0}, {0,0,0,0,0,0,1,1}}, tp1.exercise_i(graph));
+        assertArrayEquals(new int[][]{{1, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 0, 0, 0, 0, 0}, {0, 1, 0, 1, 1, 0, 0, 1}, {0, 0, 1, 1, 0, 1, 1, 0}, {0, 0, 0, 0, 1, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 1}}, tp1.exercise_i(graph));
+    }
+
+    @Test
+    public void exercise_i_smaller_test() {
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+
+        graph.addEdge(1, 2);
+        graph.addEdge(1, 3);
+        graph.addEdge(1, 4);
+        graph.addEdge(3, 4);
+
+        int[][] result = tp1.exercise_i(graph);
+        assertEquals(4, result.length);
+        assertEquals(4, result[0].length);
     }
 }

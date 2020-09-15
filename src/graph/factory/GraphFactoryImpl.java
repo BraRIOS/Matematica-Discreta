@@ -11,4 +11,12 @@ public class GraphFactoryImpl<T> implements GraphFactory<T> {
             case EDGE_ARRAY -> new EdgeArrayGraphImpl<>();
         };
     }
+
+    //    Returns a random graph
+    @Override
+    public Graph<T> getGraph() {
+//        return new EdgeArrayGraphImpl<>();
+        return new AdjacencyMatrixGraphImpl<>();
+//        return new AdjacencyListGraphImpl<>();
+    }
 }
