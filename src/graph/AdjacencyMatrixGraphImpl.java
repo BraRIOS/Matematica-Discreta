@@ -17,12 +17,12 @@ public class AdjacencyMatrixGraphImpl<T> implements Graph<T> {
         alpha = 0;
     }
 
-    /*public AdjacencyMatrixGraphImpl(int capacity) {
+    public AdjacencyMatrixGraphImpl(int capacity) {
         V = new ArrayList<>(capacity);
         A = new boolean[capacity][capacity];
         n = 0;
         alpha = 0;
-    }*/
+    }
 
     @Override
     public void addVertex(T x) {

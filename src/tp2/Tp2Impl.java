@@ -202,7 +202,15 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public Graph<T> exercise_l(Graph<T> graph) {
-        return new AdjacencyMatrixGraphImpl<>();
+        Graph<T> complementary_graph = new AdjacencyMatrixGraphImpl<>(graph.order());
+        for (T v : graph.getVertexes()) {
+            complementary_graph.addVertex(v);
+            List<T> adjacencyList = graph.getAdjacencyList(v);
+            for (T w : graph.getVertexes()) {
+                if(!w.equals(v) && !adjacencyList.contains(w)) complementary_graph.addEdge(v,w);
+            }
+        }
+        return complementary_graph;
     }
 
     @Override
@@ -212,7 +220,15 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public Map<T, Integer> exercise_n(Graph<T> graph) {
-        return new HashMap<>();
+        Map<T,Integer> vertex_grade = new HashMap<>();
+        for (T v : graph.getVertexes()) {
+            int grade = 0;
+            for (T t : graph.getAdjacencyList(v)) {
+                if (t.equals(v)) grade+=2;
+                else grade++;
+            }
+            vertex_grade.put(v,grade);
+        }
+        return vertex_grade;
     }
-
 }

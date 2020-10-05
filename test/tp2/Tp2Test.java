@@ -578,7 +578,7 @@ public class Tp2Test extends SkipRule {
         assertTrue(complementary_graph_1.hasEdge("C", "D"));
 
         assertEquals(4, complementary_graph_1.order());
-        assertEquals(5, complementary_graph_1.alpha());
+        assertEquals(4, complementary_graph_1.alpha());
     }
 
     @Test
